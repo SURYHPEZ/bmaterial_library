@@ -2,6 +2,6 @@ BMaterial Library
 =================
 
 
-###### Description ######
+### Description ###
 
 BMaterial Library is a simple blender material library
