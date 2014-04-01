@@ -1,7 +1,7 @@
 bl_info = {
     'name': 'BMaterial Library',
     'author': 'SURYHPEZ',
-    'blender': (2, 68, 0),
+    'blender': (2, 66, 0),
     'location': 'Material > BMaterial Library',
     'description': 'BMaterial Library',
     'warning': '',
@@ -18,9 +18,9 @@ if "bpy" in locals():
 _modules = (
     'category_operator',
     'material_operator',
-    'ui',
-    'types',
     'props',
+    'types',
+    'ui',
 )
 
 __import__(name=__name__, fromlist=_modules)
@@ -30,9 +30,20 @@ del _namespace
 
 import bpy
 
+from .import consts, custom, handlers
+from .core.library import Library
+
+
+library = Library(consts.BMATLIB_DATA_PATH)
+cat_manager, mat_manager = library.open()
+
 
 def register():
+    bpy.app.handlers.scene_update_post.append(handlers.materials_update)
     bpy.utils.register_module(__name__)
+
+    custom.load_bmatlib(cat_manager, mat_manager)
+
 
 def unregister():
     bpy.utils.unregister_module(__name__)

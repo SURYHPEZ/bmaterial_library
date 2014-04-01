@@ -2,11 +2,16 @@ import bpy
 import inspect
 import os.path
 
+
+BMATLIB_PREV_MAT = "BMATLIB_PREV"
+
 BMATLIB_PATH = os.path.split(inspect.getfile(inspect.currentframe()))[0]
 BMATLIB_DATA_PATH = os.path.join(BMATLIB_PATH, "data")
 BMATLIB_DATA_INDEX_PATH = os.path.join(BMATLIB_DATA_PATH, "INDEX")
 BMATLIB_TEMP_PATH = bpy.app.tempdir
 BMATLIB_TEMP_BLEND = os.path.join(BMATLIB_TEMP_PATH, "bmatlib_tmp.blend")
+BMATLIB_EMPTY_BLEND = os.path.join(BMATLIB_PATH, "res", "empty.blend")
+BMATLIB_SAVE_SCRIPT = os.path.join(BMATLIB_PATH, "scripts", "save_mat.py")
 
 
 BMATLIB_MATERIAL_MODE = [("DEFAULT", ) * 3, ("EDIT", ) * 3,
