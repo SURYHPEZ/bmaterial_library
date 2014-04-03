@@ -15,6 +15,12 @@ class BMATLIB_OP_SetMaterialMode(Operator):
     mode = EnumProperty(name="Material Mode",
                         items=consts.BMATLIB_MATERIAL_MODE)
 
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
+
     def execute(self, context):
         wm = context.window_manager
 
@@ -32,6 +38,12 @@ class BMATLIB_OP_SetMaterialSaveMode(Operator):
     mode = EnumProperty(name="Material Save Mode",
                         items=consts.BMATLIB_MATERIAL_SAVE_MODE)
 
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
+
     def execute(self, context):
         wm = context.window_manager
 
@@ -48,7 +60,10 @@ class BMATLIB_OP_AppendMaterial(Operator):
 
     @classmethod
     def poll(cls, context):
-        return True if context.object else False
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES" \
+               and context.object
 
     def execute(self, context):
         wm = context.window_manager
@@ -69,7 +84,12 @@ class BMATLIB_OP_ReplaceMaterial(Operator):
 
     @classmethod
     def poll(cls, context):
-        return True if context.object.active_material else False
+        space_type = context.space_data.type
+        active_obj = context.object
+
+        return space_type == "PROPERTIES" \
+               and active_obj \
+               and active_obj.active_material
 
     def execute(self, context):
         wm = context.window_manager
@@ -88,6 +108,12 @@ class BMATLIB_OP_RemoveMaterial(Operator):
     bl_description = "Remove current material from library"
     bl_options = {"REGISTER", "INTERNAL"}
 
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
+
     def execute(self, context):
         wm = context.window_manager
         active_mat = wm.bmatlib_active_mat
@@ -95,6 +121,8 @@ class BMATLIB_OP_RemoveMaterial(Operator):
         bml.mat_manager.remove(active_mat.id)
 
         custom.load_mat_list(bml.mat_manager, wm.bmatlib_cat_list)
+
+        bpy.ops.bmatlib.set_mat_mode(mode="CLOSE")
 
         return {"FINISHED"}
 
@@ -113,6 +141,15 @@ class BMATLIB_OP_SaveMaterial(Operator):
     bl_label = "Save Material"
     bl_description = "Save object's active material to library"
     bl_options = {"REGISTER", "INTERNAL"}
+
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+        active_obj = context.object
+
+        return space_type == "PROPERTIES" \
+               and active_obj \
+               and active_obj.active_material
 
     def execute(self, context):
         wm = context.window_manager
@@ -147,6 +184,12 @@ class BMATLIB_OP_EditMaterial(Operator):
     bl_description = "Modify current material's properties"
     bl_options = {"REGISTER", "INTERNAL"}
 
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
+
     def execute(self, context):
         wm = context.window_manager
         active_mat = wm.bmatlib_active_mat
@@ -160,5 +203,7 @@ class BMATLIB_OP_EditMaterial(Operator):
         bml.mat_manager.update(active_mat.id, data)
 
         custom.load_mat_list(bml.mat_manager, wm.bmatlib_cat_list)
+
+        bpy.ops.bmatlib.set_mat_mode(mode="DEFAULT")
 
         return {"FINISHED"}

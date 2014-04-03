@@ -16,6 +16,13 @@ class BMATLIB_OP_SetCategoryMode(Operator):
     mode = EnumProperty(name="Category Mode",
                         items=consts.BMATLIB_CATEGORY_MODE)
 
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
+
+
     def execute(self, context):
         wm = context.window_manager
 
@@ -29,6 +36,12 @@ class BMATLIB_OP_AddCategory(Operator):
     bl_label = "Add category"
     bl_description = "Add category"
     bl_options = {"REGISTER", "INTERNAL"}
+
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
 
     def execute(self, context):
         wm = context.window_manager
@@ -58,6 +71,12 @@ class BMATLIB_OP_EditCategory(Operator):
     bl_description = "Edit category"
     bl_options = {"REGISTER", "INTERNAL"}
 
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
+
     def execute(self, context):
         wm = context.window_manager
         cur_cat_name = wm.bmatlib_cat_list
@@ -86,6 +105,12 @@ class BMATLIB_OP_RemoveCategory(Operator):
     bl_label = "Remove category"
     bl_description = "Remove category"
     bl_options = {"REGISTER", "INTERNAL"}
+
+    @classmethod
+    def poll(self, context):
+        space_type = context.space_data.type
+
+        return space_type == "PROPERTIES"
 
     def execute(self, context):
         wm = context.window_manager
