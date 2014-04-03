@@ -57,7 +57,7 @@ def cat_mode_update(self, context):
     if mode == "ADD":
         self.bmatlib_cat_name = "New Category"
     elif mode == "EDIT":
-        self.bmatlib_cat_name = wm.bmatlib_cat_list
+        self.bmatlib_cat_name = self.bmatlib_cat_list
     else:
         self.bmatlib_cat_name = ""
 

@@ -103,6 +103,7 @@ class MaterialManager(Subject):
         for key, value in data.items():
             if key != getattr(mat, key):
                 if key == "category":
+                    value = value.lower()
                     mat_blend = mat.id + ".blend"
                     src_cat = os.path.join(self.__path, mat.category,
                                            mat_blend)
